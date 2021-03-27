@@ -124,8 +124,6 @@ var Calander = /*#__PURE__*/function () {
     this.today = _today;
     this.dayList = dayList;
     this.monthList = monthList;
-    var prevMonth = this.prevMonth(_today);
-    var nextMonth = this.nextMonth(_today);
     $target.appendChild(this.section);
     this.render();
   }
@@ -133,6 +131,8 @@ var Calander = /*#__PURE__*/function () {
   _createClass(Calander, [{
     key: "makeCalanderHeader",
     value: function makeCalanderHeader() {
+      var _this = this;
+
       var title = document.createElement('div');
       title.className = 'calander-header';
       var prevButton = document.createElement('button');
@@ -141,23 +141,25 @@ var Calander = /*#__PURE__*/function () {
       prevIcon.innerText = '<';
       prevButton.appendChild(prevIcon);
       var titleText = document.createElement('h2');
-      titleText.innerText = this.monthList[this.today.getMonth()];
+      titleText.innerText = this.monthList[this.today.getMonth()] + " " + this.today.getFullYear();
       var nextButton = document.createElement('button');
       nextButton.setAttribute('type', 'button');
       var nextIcon = document.createElement('span');
       nextIcon.innerText = '>';
       nextButton.appendChild(nextIcon); //Refactor
-      // prevButton.onclick = (e) =>{
-      //     this.today = this.prevMonth;
-      //     console.log(this.today);
-      //     this.render();
-      // }
-      // nextButton.onclick = (e) => {
-      //     this.today = this.nextMonth;
-      //     console.log(this.today);
-      //     this.render();   
-      // }
-      //
+
+      prevButton.onclick = function (e) {
+        _this.today = _this.prevMonth(_this.today);
+
+        _this.render();
+      };
+
+      nextButton.onclick = function (e) {
+        _this.today = _this.nextMonth(_this.today);
+
+        _this.render();
+      }; //
+
 
       title.appendChild(prevButton);
       title.appendChild(titleText);
@@ -182,7 +184,7 @@ var Calander = /*#__PURE__*/function () {
 
           var curDayData = document.createElement('td');
           curDayData.textContent = curDay;
-          if (curDay === 'Sun') curDayData.setAttribute('color', '#ef3333');else if (curDay == 'Sat') curDayData.setAttribute('color', '#2107e0');
+          if (curDay === 'Sun') curDayData.setAttribute('color', '#ef3333 !important');else if (curDay == 'Sat') curDayData.setAttribute('color', '#2107e0 !important');
           dayRow.appendChild(curDayData);
         }
       } catch (err) {
@@ -9370,7 +9372,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".header {\n  width: 100%;\n  background-color: beige; }\n\nbody {\n  margin: 0; }\n\n.calander-header h2 {\n  display: inline-block;\n  margin: 10px;\n  padding: 10px; }\n\n.calander {\n  width: 100%;\n  display: block;\n  text-align: center;\n  background: #ddaf35; }\n\ntable {\n  margin: auto; }\n\ntr td {\n  width: 40px;\n  height: 40px;\n  text-align: center;\n  font-size: 20px;\n  font-weight: bold; }\n", "",{"version":3,"sources":["webpack://./src/sass/partials/_header.scss","webpack://./src/sass/partials/_body.scss","webpack://./src/sass/partials/_calanderHeader.scss","webpack://./src/sass/partials/_calander.scss"],"names":[],"mappings":"AAAA;EACI,WAAW;EACX,uBAAsB,EAAA;;ACF1B;EACI,SAAS,EAAA;;ACDb;EACI,qBAAqB;EACrB,YAAY;EACZ,aAAa,EAAA;;ACHjB;EACI,WAAW;EACX,cAAc;EACd,kBAAmB;EACnB,mBAAmB,EAAA;;AAGvB;EACI,YAAY,EAAA;;AAGhB;EACI,WAAW;EACX,YAAY;EACZ,kBAAkB;EAClB,eAAe;EACf,iBAAiB,EAAA","sourcesContent":[".header {\r\n    width: 100%;\r\n    background-color:beige;\r\n}","body {\r\n    margin: 0;\r\n}",".calander-header h2 {\r\n    display: inline-block;\r\n    margin: 10px;\r\n    padding: 10px;\r\n}\r\n",".calander {\r\n    width: 100%;\r\n    display: block;\r\n    text-align : center;\r\n    background: #ddaf35;\r\n}\r\n\r\ntable {\r\n    margin: auto;\r\n}\r\n\r\ntr td{\r\n    width: 40px;\r\n    height: 40px;\r\n    text-align: center;\r\n    font-size: 20px;\r\n    font-weight: bold;\r\n}\r\n"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, ".header {\n  width: 100%;\n  height: 5vh;\n  background-color: beige; }\n\nbody {\n  margin: 0; }\n\n.calander-header h2 {\n  display: inline-block;\n  margin: 10px;\n  padding: 10px; }\n\n.calander {\n  width: 100%;\n  height: 95vh;\n  display: block;\n  text-align: center;\n  background: #ddaf35; }\n\ntable {\n  margin: auto; }\n\ntr td {\n  width: 40px;\n  height: 40px;\n  text-align: center;\n  font-size: 20px;\n  font-weight: bold; }\n", "",{"version":3,"sources":["webpack://./src/sass/partials/_header.scss","webpack://./src/sass/partials/_body.scss","webpack://./src/sass/partials/_calanderHeader.scss","webpack://./src/sass/partials/_calander.scss"],"names":[],"mappings":"AAAA;EACI,WAAW;EACX,WAAW;EACX,uBAAsB,EAAA;;ACH1B;EACI,SAAS,EAAA;;ACDb;EACI,qBAAqB;EACrB,YAAY;EACZ,aAAa,EAAA;;ACHjB;EACI,WAAW;EACX,YAAY;EACZ,cAAc;EACd,kBAAmB;EACnB,mBAAmB,EAAA;;AAGvB;EACI,YAAY,EAAA;;AAGhB;EACI,WAAW;EACX,YAAY;EACZ,kBAAkB;EAClB,eAAe;EACf,iBAAiB,EAAA","sourcesContent":[".header {\r\n    width: 100%;\r\n    height: 5vh;\r\n    background-color:beige;\r\n}","body {\r\n    margin: 0;\r\n}",".calander-header h2 {\r\n    display: inline-block;\r\n    margin: 10px;\r\n    padding: 10px;\r\n}",".calander {\r\n    width: 100%;\r\n    height: 95vh;\r\n    display: block;\r\n    text-align : center;\r\n    background: #ddaf35;\r\n}\r\n\r\ntable {\r\n    margin: auto;\r\n}\r\n\r\ntr td{\r\n    width: 40px;\r\n    height: 40px;\r\n    text-align: center;\r\n    font-size: 20px;\r\n    font-weight: bold;\r\n}\r\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

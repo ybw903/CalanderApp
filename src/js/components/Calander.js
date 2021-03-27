@@ -7,9 +7,6 @@ export default class Calander {
         this.dayList = dayList;
         this.monthList = monthList;
 
-        const prevMonth = this.prevMonth(today);
-        const nextMonth = this.nextMonth(today);
-
         $target.appendChild(this.section);
 
 
@@ -39,30 +36,26 @@ export default class Calander {
         prevButton.appendChild(prevIcon);
 
         const titleText = document.createElement('h2');
-        titleText.innerText = this.monthList[this.today.getMonth()];
+        titleText.innerText = this.monthList[this.today.getMonth()]+" "+ this.today.getFullYear();
        
         const nextButton = document.createElement('button');
         nextButton.setAttribute('type','button');
         const nextIcon = document.createElement('span');
         nextIcon.innerText = '>';
-        nextButton.appendChild(nextIcon);
-
+        nextButton.appendChild(nextIcon);   
 
         //Refactor
-        // prevButton.onclick = (e) =>{
-        //     this.today = this.prevMonth;
-        //     console.log(this.today);
-        //     this.render();
-            
-        // }
+        prevButton.onclick =(e) => {
+            this.today=this.prevMonth(this.today);
+            this.render();
+        }
 
-        // nextButton.onclick = (e) => {
-        //     this.today = this.nextMonth;
-        //     console.log(this.today);
-        //     this.render();   
-        // }
-        
+        nextButton.onclick = (e) => {
+            this.today=this.nextMonth(this.today);
+            this.render();
+        }
         //
+
 
         title.appendChild(prevButton);
         title.appendChild(titleText);
@@ -79,10 +72,6 @@ export default class Calander {
              const curDay = day.substring(0,3);
              const curDayData = document.createElement('td');
              curDayData.textContent = curDay;
-
-             
-             if(curDay==='Sun')curDayData.setAttribute('color','#ef3333');
-             else if(curDay=='Sat')curDayData.setAttribute('color','#2107e0');
 
              dayRow.appendChild(curDayData);
          }
