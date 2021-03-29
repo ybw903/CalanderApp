@@ -1,0 +1,50 @@
+
+.hidden {
+    visibility: hidden;
+}
+
+.overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-wrapper {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    z-index: 1;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-contents {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    
+    height: 70%;
+    width: 30%;
+    padding: 10px;
+    background-color: white;
+    color: black;
+
+    /* TODO: box-shadow */
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+
+    font-size: 30px;
+}
+
+.modal-title {
+    margin: 0;
+}

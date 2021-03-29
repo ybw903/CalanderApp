@@ -1,5 +1,6 @@
 import Calander from "./components/Calander";
 import Header from "./components/Header";
+import TodoModal from "./components/TodoModal";
 
 export default class App {
 
@@ -11,8 +12,9 @@ export default class App {
 
         const today = new Date();
         const header = new Header($target);
-        const calaner = new Calander({$target,today, dayList, monthList});
-
+        const calaner = new Calander({$target,today, dayList, monthList,
+             onClick: ()=>{todoModal.setState()}});
+        const todoModal = new TodoModal($target);
     }
 
 

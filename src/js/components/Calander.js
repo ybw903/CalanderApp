@@ -1,19 +1,19 @@
 export default class Calander {
-    constructor({$target,today, dayList, monthList}) {
+    constructor({$target,today, dayList, monthList, onClick}) {
 
-        this.section = document.createElement('section');
-        this.section.className='calander';
         this.today = today;
         this.dayList = dayList;
         this.monthList = monthList;
+        this.onClick = onClick;
+
+        this.section = document.createElement('section');
+        this.section.className='calander';
 
         $target.appendChild(this.section);
 
-
         this.render();
-
-    
     }
+
 
     prevMonth = (today) => {
         return new Date(today.getFullYear(), today.getMonth()-1,today.getDate());
@@ -25,6 +25,7 @@ export default class Calander {
 
 
     makeCalanderHeader() {
+
         const title = document.createElement('div');
         title.className = 'calander-header';
 
@@ -94,6 +95,8 @@ export default class Calander {
                  } else {
                      tableData.textContent = day;
                      tableRow.appendChild(tableData);
+                     tableData.className='td-day';
+                     tableData.addEventListener('click', e=>{this.onClick()});
                      day = (day === lastDay.getDate()? 0 : day+1);
                  }
                  
@@ -102,7 +105,6 @@ export default class Calander {
          }
          return table;
     }
-
 
     render() {
         this.section.innerHTML = '';

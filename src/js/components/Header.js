@@ -18,7 +18,7 @@ export default class Header {
         const title = document.createElement('div');
         title.className = 'title';
         
-        const titleText = document.createElement('span');
+        const titleText = document.createElement('h3');
 
         titleText.innerText = "Calander App"
 
