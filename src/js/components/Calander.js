@@ -1,9 +1,10 @@
 export default class Calander {
-    constructor({$target,today, dayList, monthList, onClick}) {
+    constructor({$target,today, dayList, monthList, todoList, onClick}) {
 
         this.today = today;
         this.dayList = dayList;
         this.monthList = monthList;
+        this.todoList = todoList;
         this.onClick = onClick;
 
         this.section = document.createElement('section');
@@ -74,6 +75,9 @@ export default class Calander {
              const curDayData = document.createElement('td');
              curDayData.textContent = curDay;
 
+             if(curDay==='Sun') curDayData.className='sunday';
+             else if(curDay==='Sat') curDayData.className='satday';
+
              dayRow.appendChild(curDayData);
          }
          table.appendChild(dayRow);
@@ -93,10 +97,18 @@ export default class Calander {
                  if(!day){ 
                      tableRow.appendChild(tableData);
                  } else {
+
+                    const theDay = new Date(this.today.getFullYear(), this.today.getMonth(), day);
+                    const todo = this.todoList.find(element => {
+                        console.log(+element.date=== +theDay);
+                        return +element.date === +theDay
+                    });
+
                      tableData.textContent = day;
                      tableRow.appendChild(tableData);
                      tableData.className='td-day';
-                     tableData.addEventListener('click', e=>{this.onClick()});
+                     tableData.addEventListener('click', e=>{this.onClick(theDay)});
+                     if(todo!==undefined) tableData.style.backgroundColor = todo.todoColor;
                      day = (day === lastDay.getDate()? 0 : day+1);
                  }
                  
@@ -107,6 +119,7 @@ export default class Calander {
     }
 
     render() {
+
         this.section.innerHTML = '';
 
         const wrapper = document.createElement('div');

@@ -65,18 +65,27 @@ var App = function App($target) {
 
   var dayList = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   var monthList = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  var todoList = [];
   var today = new Date();
   var header = new _components_Header__WEBPACK_IMPORTED_MODULE_1__.default($target);
-  var calaner = new _components_Calander__WEBPACK_IMPORTED_MODULE_0__.default({
+  var calander = new _components_Calander__WEBPACK_IMPORTED_MODULE_0__.default({
     $target: $target,
     today: today,
     dayList: dayList,
     monthList: monthList,
-    onClick: function onClick() {
-      todoModal.setState();
+    todoList: todoList,
+    onClick: function onClick(day) {
+      todoModal.setState(day);
+    }
+  }); //TODO : Type
+
+  var todoModal = new _components_TodoModal__WEBPACK_IMPORTED_MODULE_2__.default({
+    $target: $target,
+    todoList: todoList,
+    calRender: function calRender() {
+      calander.render();
     }
   });
-  var todoModal = new _components_TodoModal__WEBPACK_IMPORTED_MODULE_2__.default($target);
 };
 
 
@@ -114,6 +123,7 @@ var Calander = /*#__PURE__*/function () {
         _today = _ref.today,
         dayList = _ref.dayList,
         monthList = _ref.monthList,
+        todoList = _ref.todoList,
         onClick = _ref.onClick;
 
     _classCallCheck(this, Calander);
@@ -129,6 +139,7 @@ var Calander = /*#__PURE__*/function () {
     this.today = _today;
     this.dayList = dayList;
     this.monthList = monthList;
+    this.todoList = todoList;
     this.onClick = onClick;
     this.section = document.createElement('section');
     this.section.className = 'calander';
@@ -194,6 +205,7 @@ var Calander = /*#__PURE__*/function () {
 
           var curDayData = document.createElement('td');
           curDayData.textContent = curDay;
+          if (curDay === 'Sun') curDayData.className = 'sunday';else if (curDay === 'Sat') curDayData.className = 'satday';
           dayRow.appendChild(curDayData);
         }
       } catch (err) {
@@ -220,13 +232,23 @@ var Calander = /*#__PURE__*/function () {
           if (!day) {
             tableRow.appendChild(tableData);
           } else {
-            tableData.textContent = day;
-            tableRow.appendChild(tableData);
-            tableData.className = 'td-day';
-            tableData.addEventListener('click', function (e) {
-              _this2.onClick();
-            });
-            day = day === lastDay.getDate() ? 0 : day + 1;
+            (function () {
+              var theDay = new Date(_this2.today.getFullYear(), _this2.today.getMonth(), day);
+
+              var todo = _this2.todoList.find(function (element) {
+                console.log(+element.date === +theDay);
+                return +element.date === +theDay;
+              });
+
+              tableData.textContent = day;
+              tableRow.appendChild(tableData);
+              tableData.className = 'td-day';
+              tableData.addEventListener('click', function (e) {
+                _this2.onClick(theDay);
+              });
+              if (todo !== undefined) tableData.style.backgroundColor = todo.todoColor;
+              day = day === lastDay.getDate() ? 0 : day + 1;
+            })();
           }
         }
 
@@ -320,23 +342,30 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ TodoModal)
 /* harmony export */ });
+/* harmony import */ var _models_Todo__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../models/Todo */ "./src/js/models/Todo.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+
+
 var TodoModal = /*#__PURE__*/function () {
-  function TodoModal($target) {
+  function TodoModal(_ref) {
+    var $target = _ref.$target,
+        todoList = _ref.todoList,
+        calRender = _ref.calRender;
+
     _classCallCheck(this, TodoModal);
 
-    //modal//
     this.isVisible = false;
     this.data = null;
+    this.todoList = todoList;
+    this.calRender = calRender;
     this.modalWrapper = document.createElement('div');
     this.modalWrapper.className = 'modal-wrapper';
-    this.modalWrapper.classList.add('hidden'); //
-
+    this.modalWrapper.classList.add('hidden');
     $target.appendChild(this.modalWrapper);
     this.render();
   }
@@ -350,9 +379,9 @@ var TodoModal = /*#__PURE__*/function () {
     }
   }, {
     key: "setState",
-    value: function setState() {
+    value: function setState(theDay) {
       this.toggleModal();
-      console.log(this.isVisible);
+      this.data = theDay;
       this.render();
     }
   }, {
@@ -363,15 +392,27 @@ var TodoModal = /*#__PURE__*/function () {
       this.modalWrapper.innerHTML = '';
     }
   }, {
-    key: "render",
-    value: function render() {
+    key: "onSave",
+    value: function onSave() {
+      var todoName = document.querySelector('#todoName').value;
+      var todo = document.querySelector('#todo').value;
+      var todoColor = document.querySelector('#todoColor').value;
+      var date = this.data;
+      var newTodo = new _models_Todo__WEBPACK_IMPORTED_MODULE_0__.default({
+        todoName: todoName,
+        todo: todo,
+        todoColor: todoColor,
+        date: date
+      });
+      this.todoList.push(newTodo);
+      this.calRender();
+      this.onClose();
+    }
+  }, {
+    key: "makeModalHeader",
+    value: function makeModalHeader() {
       var _this = this;
 
-      if (!this.isVisible) return;
-      var overlay = document.createElement('div');
-      overlay.className = 'overlay';
-      var modalContents = document.createElement('section');
-      modalContents.className = 'modal-contents';
       var modalHeader = document.createElement('header');
       modalHeader.className = 'modal-header';
       var modalTitle = document.createElement('p');
@@ -385,7 +426,75 @@ var TodoModal = /*#__PURE__*/function () {
       });
       modalHeader.appendChild(modalTitle);
       modalHeader.appendChild(closeBtn);
-      modalContents.appendChild(modalHeader);
+      return modalHeader;
+    }
+  }, {
+    key: "makeModalBody",
+    value: function makeModalBody() {
+      var modalBody = document.createElement('div');
+      var modaltodoRow1 = document.createElement('div');
+      var todoNamelabel = document.createElement('label');
+      todoNamelabel.innerText = '일정명';
+      var todoName = document.createElement('input');
+      todoName.setAttribute('type', 'text');
+      todoName.id = "todoName";
+      modaltodoRow1.appendChild(todoNamelabel);
+      modaltodoRow1.appendChild(todoName);
+      var modaltodoRow2 = document.createElement('div');
+      var todolabel = document.createElement('label');
+      todolabel.innerText = '일정내용';
+      var todo = document.createElement('textarea');
+      todo.setAttribute('rows', '4');
+      todo.setAttribute('cols', '50');
+      todo.id = "todo";
+      modaltodoRow2.appendChild(todolabel);
+      modaltodoRow2.appendChild(todo);
+      var modaltodoRow3 = document.createElement('div');
+      var todoColorLabel = document.createElement('label');
+      todoColorLabel.innerText = '컬러';
+      var todoColor = document.createElement('input');
+      todoColor.setAttribute('type', 'text');
+      todoColor.id = "todoColor";
+      modaltodoRow3.appendChild(todoColorLabel);
+      modaltodoRow3.appendChild(todoColor);
+      modalBody.appendChild(modaltodoRow1);
+      modalBody.appendChild(modaltodoRow2);
+      modalBody.appendChild(modaltodoRow3);
+      return modalBody;
+    }
+  }, {
+    key: "makeModalFooter",
+    value: function makeModalFooter() {
+      var _this2 = this;
+
+      var modalFooter = document.createElement('div');
+      var cancelButton = document.createElement('button');
+      cancelButton.setAttribute('type', 'button');
+      cancelButton.innerText = '취소';
+      cancelButton.addEventListener('click', function () {
+        _this2.onClose();
+      });
+      var saveButton = document.createElement('button');
+      cancelButton.setAttribute('type', 'button');
+      saveButton.innerText = '저장';
+      saveButton.addEventListener('click', function () {
+        _this2.onSave();
+      });
+      modalFooter.appendChild(cancelButton);
+      modalFooter.appendChild(saveButton);
+      return modalFooter;
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      if (!this.isVisible) return;
+      var overlay = document.createElement('div');
+      overlay.className = 'overlay';
+      var modalContents = document.createElement('section');
+      modalContents.className = 'modal-contents';
+      modalContents.appendChild(this.makeModalHeader());
+      modalContents.appendChild(this.makeModalBody());
+      modalContents.appendChild(this.makeModalFooter());
       this.modalWrapper.appendChild(overlay);
       this.modalWrapper.appendChild(modalContents);
     }
@@ -393,6 +502,37 @@ var TodoModal = /*#__PURE__*/function () {
 
   return TodoModal;
 }();
+
+
+
+/***/ }),
+
+/***/ "./src/js/models/Todo.js":
+/*!*******************************!*\
+  !*** ./src/js/models/Todo.js ***!
+  \*******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ Todo)
+/* harmony export */ });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Todo = function Todo(_ref) {
+  var todoName = _ref.todoName,
+      todo = _ref.todo,
+      todoColor = _ref.todoColor,
+      date = _ref.date;
+
+  _classCallCheck(this, Todo);
+
+  this.todoName = todoName;
+  this.todo = todo;
+  this.todoColor = todoColor;
+  this.date = date;
+};
 
 
 
@@ -9474,7 +9614,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".header {\n  width: 100%;\n  height: 5vh;\n  background-color: beige; }\n\n.title {\n  text-align: center;\n  padding: 5px 0 0 0; }\n\nh3 {\n  margin: 0; }\n\nbody {\n  margin: 0; }\n\n.calander-header h2 {\n  display: inline-block;\n  margin: 10px;\n  padding: 10px; }\n\n.calander {\n  width: 100%;\n  height: 95vh;\n  display: block;\n  text-align: center;\n  background: #ddaf35; }\n\ntable {\n  margin: auto; }\n\ntr td {\n  width: 40px;\n  height: 40px;\n  text-align: center;\n  font-size: 20px;\n  font-weight: bold; }\n\n.td-day:hover {\n  background-color: cornflowerblue;\n  border-radius: 50%;\n  cursor: pointer; }\n\n.hidden {\n  visibility: hidden; }\n\n.overlay {\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.5); }\n\n.modal-wrapper {\n  position: fixed;\n  top: 0;\n  bottom: 0;\n  left: 0;\n  right: 0;\n  z-index: 1;\n  display: flex;\n  justify-content: center;\n  align-items: center; }\n\n.modal-contents {\n  position: relative;\n  display: flex;\n  flex-direction: column;\n  height: 70%;\n  width: 30%;\n  padding: 10px;\n  background-color: white;\n  color: black;\n  /* TODO: box-shadow */ }\n\n.modal-header {\n  display: flex;\n  justify-content: space-between;\n  font-size: 30px; }\n\n.modal-title {\n  margin: 0; }\n", "",{"version":3,"sources":["webpack://./src/sass/partials/_header.scss","webpack://./src/sass/partials/_body.scss","webpack://./src/sass/partials/_calanderHeader.scss","webpack://./src/sass/partials/_calander.scss","webpack://./src/sass/partials/_todoModal.scss"],"names":[],"mappings":"AAAA;EACI,WAAW;EACX,WAAW;EACX,uBAAsB,EAAA;;AAG1B;EACI,kBAAkB;EAClB,kBAAkB,EAAA;;AAGtB;EACI,SAAS,EAAA;;ACZb;EACI,SAAS,EAAA;;ACDb;EACI,qBAAqB;EACrB,YAAY;EACZ,aAAa,EAAA;;ACHjB;EACI,WAAW;EACX,YAAY;EACZ,cAAc;EACd,kBAAmB;EACnB,mBAAmB,EAAA;;AAGvB;EACI,YAAY,EAAA;;AAGhB;EACI,WAAW;EACX,YAAY;EACZ,kBAAkB;EAClB,eAAe;EACf,iBAAiB,EAAA;;AAGrB;EACI,gCAAgC;EAChC,kBAAkB;EAClB,eAAe,EAAA;;ACtBnB;EACI,kBAAkB,EAAA;;AAGtB;EACI,kBAAkB;EAClB,WAAW;EACX,YAAY;EACZ,oCAAoC,EAAA;;AAGxC;EACI,eAAe;EACf,MAAM;EACN,SAAS;EACT,OAAO;EACP,QAAQ;EAER,UAAU;EAEV,aAAa;EACb,uBAAuB;EACvB,mBAAmB,EAAA;;AAGvB;EACI,kBAAkB;EAClB,aAAa;EACb,sBAAsB;EAEtB,WAAW;EACX,UAAU;EACV,aAAa;EACb,uBAAuB;EACvB,YAAY;EAEZ,qBAAA,EAAsB;;AAG1B;EACI,aAAa;EACb,8BAA8B;EAE9B,eAAe,EAAA;;AAGnB;EACI,SAAS,EAAA","sourcesContent":[".header{\r\n    width: 100%;\r\n    height: 5vh;\r\n    background-color:beige;\r\n}\r\n\r\n.title {\r\n    text-align: center;\r\n    padding: 5px 0 0 0;\r\n}\r\n\r\nh3{\r\n    margin: 0;\r\n}","body {\r\n    margin: 0;\r\n}",".calander-header h2 {\r\n    display: inline-block;\r\n    margin: 10px;\r\n    padding: 10px;\r\n}\r\n",".calander {\r\n    width: 100%;\r\n    height: 95vh;\r\n    display: block;\r\n    text-align : center;\r\n    background: #ddaf35;\r\n}\r\n\r\ntable {\r\n    margin: auto;\r\n}\r\n\r\ntr td{\r\n    width: 40px;\r\n    height: 40px;\r\n    text-align: center;\r\n    font-size: 20px;\r\n    font-weight: bold;\r\n}\r\n\r\n.td-day:hover {\r\n    background-color: cornflowerblue;\r\n    border-radius: 50%;\r\n    cursor: pointer;\r\n}","\r\n.hidden {\r\n    visibility: hidden;\r\n}\r\n\r\n.overlay {\r\n    position: absolute;\r\n    width: 100%;\r\n    height: 100%;\r\n    background-color: rgba(0, 0, 0, 0.5);\r\n}\r\n\r\n.modal-wrapper {\r\n    position: fixed;\r\n    top: 0;\r\n    bottom: 0;\r\n    left: 0;\r\n    right: 0;\r\n\r\n    z-index: 1;\r\n    \r\n    display: flex;\r\n    justify-content: center;\r\n    align-items: center;\r\n}\r\n\r\n.modal-contents {\r\n    position: relative;\r\n    display: flex;\r\n    flex-direction: column;\r\n    \r\n    height: 70%;\r\n    width: 30%;\r\n    padding: 10px;\r\n    background-color: white;\r\n    color: black;\r\n\r\n    /* TODO: box-shadow */\r\n}\r\n\r\n.modal-header {\r\n    display: flex;\r\n    justify-content: space-between;\r\n\r\n    font-size: 30px;\r\n}\r\n\r\n.modal-title {\r\n    margin: 0;\r\n}"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, ".header {\n  width: 100%;\n  height: 5vh;\n  background-color: beige; }\n\n.title {\n  text-align: center;\n  padding: 7px 0 0 0; }\n\nh3 {\n  margin: 0; }\n\nbody {\n  margin: 0; }\n\n.calander-header h2 {\n  display: inline-block;\n  margin: 10px;\n  padding: 10px; }\n\n.sunday {\n  color: red; }\n\n.satday {\n  color: blue; }\n\n.calander {\n  width: 100%;\n  height: 95vh;\n  display: block;\n  text-align: center;\n  background: #ddaf35; }\n\n.calander-content-wrapper {\n  height: 80vh; }\n\ntable {\n  margin: auto;\n  table-layout: fixed;\n  height: 100%;\n  width: 90%;\n  text-align: center;\n  font-weight: bold;\n  font-size: 1.5rem; }\n\n.td-day:hover {\n  background-color: cornflowerblue;\n  cursor: pointer; }\n\n.hidden {\n  visibility: hidden; }\n\n.overlay {\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.5); }\n\n.modal-wrapper {\n  position: fixed;\n  top: 0;\n  bottom: 0;\n  left: 0;\n  right: 0;\n  z-index: 1;\n  display: flex;\n  justify-content: center;\n  align-items: center; }\n\n.modal-contents {\n  position: relative;\n  display: flex;\n  flex-direction: column;\n  height: 70%;\n  width: 30%;\n  padding: 10px;\n  background-color: white;\n  color: black;\n  /* TODO: box-shadow */ }\n\n.modal-header {\n  display: flex;\n  justify-content: space-between;\n  font-size: 30px; }\n\n.modal-title {\n  margin: 0; }\n", "",{"version":3,"sources":["webpack://./src/sass/partials/_header.scss","webpack://./src/sass/partials/_body.scss","webpack://./src/sass/partials/_calanderHeader.scss","webpack://./src/sass/partials/_calander.scss","webpack://./src/sass/partials/_todoModal.scss"],"names":[],"mappings":"AAAA;EACI,WAAW;EACX,WAAW;EACX,uBAAsB,EAAA;;AAG1B;EACI,kBAAkB;EAClB,kBAAkB,EAAA;;AAGtB;EACI,SAAS,EAAA;;ACZb;EACI,SAAS,EAAA;;ACDb;EACI,qBAAqB;EACrB,YAAY;EACZ,aAAa,EAAA;;AAIjB;EACI,UAAU,EAAA;;AAGd;EACI,WAAW,EAAA;;ACZf;EACI,WAAW;EACX,YAAY;EACZ,cAAc;EACd,kBAAmB;EACnB,mBAAmB,EAAA;;AAGvB;EACI,YAAY,EAAA;;AAGhB;EACI,YAAY;EACZ,mBAAmB;EACnB,YAAY;EACZ,UAAU;EACV,kBAAkB;EAClB,iBAAiB;EACjB,iBAAiB,EAAA;;AAIrB;EACI,gCAAgC;EAChC,eAAe,EAAA;;ACxBnB;EACI,kBAAkB,EAAA;;AAGtB;EACI,kBAAkB;EAClB,WAAW;EACX,YAAY;EACZ,oCAAoC,EAAA;;AAGxC;EACI,eAAe;EACf,MAAM;EACN,SAAS;EACT,OAAO;EACP,QAAQ;EAER,UAAU;EAEV,aAAa;EACb,uBAAuB;EACvB,mBAAmB,EAAA;;AAGvB;EACI,kBAAkB;EAClB,aAAa;EACb,sBAAsB;EAEtB,WAAW;EACX,UAAU;EACV,aAAa;EACb,uBAAuB;EACvB,YAAY;EAEZ,qBAAA,EAAsB;;AAG1B;EACI,aAAa;EACb,8BAA8B;EAE9B,eAAe,EAAA;;AAGnB;EACI,SAAS,EAAA","sourcesContent":[".header{\r\n    width: 100%;\r\n    height: 5vh;\r\n    background-color:beige;\r\n}\r\n\r\n.title {\r\n    text-align: center;\r\n    padding: 7px 0 0 0;\r\n}\r\n\r\nh3{\r\n    margin: 0;\r\n}","body {\r\n    margin: 0;\r\n}",".calander-header h2 {\r\n    display: inline-block;\r\n    margin: 10px;\r\n    padding: 10px;\r\n}\r\n\r\n\r\n.sunday {\r\n    color :red;\r\n}\r\n\r\n.satday{\r\n    color: blue;\r\n}",".calander {\r\n    width: 100%;\r\n    height: 95vh;\r\n    display: block;\r\n    text-align : center;\r\n    background: #ddaf35;\r\n}\r\n\r\n.calander-content-wrapper{\r\n    height: 80vh;\r\n}\r\n\r\ntable{\r\n    margin: auto;\r\n    table-layout: fixed;\r\n    height: 100%;\r\n    width: 90%;\r\n    text-align: center;\r\n    font-weight: bold;\r\n    font-size: 1.5rem;\r\n}\r\n\r\n\r\n.td-day:hover {\r\n    background-color: cornflowerblue;\r\n    cursor: pointer;\r\n}","\r\n.hidden {\r\n    visibility: hidden;\r\n}\r\n\r\n.overlay {\r\n    position: absolute;\r\n    width: 100%;\r\n    height: 100%;\r\n    background-color: rgba(0, 0, 0, 0.5);\r\n}\r\n\r\n.modal-wrapper {\r\n    position: fixed;\r\n    top: 0;\r\n    bottom: 0;\r\n    left: 0;\r\n    right: 0;\r\n\r\n    z-index: 1;\r\n    \r\n    display: flex;\r\n    justify-content: center;\r\n    align-items: center;\r\n}\r\n\r\n.modal-contents {\r\n    position: relative;\r\n    display: flex;\r\n    flex-direction: column;\r\n    \r\n    height: 70%;\r\n    width: 30%;\r\n    padding: 10px;\r\n    background-color: white;\r\n    color: black;\r\n\r\n    /* TODO: box-shadow */\r\n}\r\n\r\n.modal-header {\r\n    display: flex;\r\n    justify-content: space-between;\r\n\r\n    font-size: 30px;\r\n}\r\n\r\n.modal-title {\r\n    margin: 0;\r\n}"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

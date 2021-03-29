@@ -9,12 +9,13 @@ export default class App {
 
         const dayList = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday','Saturday'];
         const monthList = ['January','February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November','December'];
+        const todoList = [];
 
         const today = new Date();
         const header = new Header($target);
-        const calaner = new Calander({$target,today, dayList, monthList,
-             onClick: ()=>{todoModal.setState()}});
-        const todoModal = new TodoModal($target);
+        const calander = new Calander({$target,today, dayList, monthList, todoList,
+             onClick: (day)=>{todoModal.setState(day)}}); //TODO : Type
+        const todoModal = new TodoModal({$target,todoList,calRender: ()=>{calander.render()}});
     }
 
 
