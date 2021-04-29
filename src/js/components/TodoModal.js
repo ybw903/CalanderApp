@@ -71,6 +71,11 @@ export default class TodoModal {
 
     makeModalBody() {
         const colors = ["#ddbdff","pink","#a4d3ee","#9fd6c2"];
+        const times = Array.from({length:24}, (v,i) =>
+             i<10?
+            "0"+i+":00"
+            : +i+":00"
+        );
 
         const modalBody = document.createElement('div');
 
@@ -108,10 +113,41 @@ export default class TodoModal {
         modaltodoRow3.appendChild(modaltodoRow3Title);
         modaltodoRow3.appendChild(todoColorSelect);
         
+        const modaltodoRow4 = document.createElement('div');
+
+        const todoStartTimeWrapper = document.createElement('div');
+        const todoStartTimeTitle = document.createElement('p');
+        todoStartTimeTitle.innerText="시작시간"
+        const todoStartTime = document.createElement('select');
+        times.map((time) => {
+            const todoTime = document.createElement('option');
+            todoTime.value = time;
+            todoTime.innerText=time;
+            todoStartTime.appendChild(todoTime);
+        });
+        todoStartTimeWrapper.appendChild(todoStartTimeTitle);
+        todoStartTimeWrapper.appendChild(todoStartTime);
+
+        const todoEndTimeWrapper = document.createElement('div');
+        const todoEndTimeTitle = document.createElement('p');
+        todoEndTimeTitle.innerText="종료시간" 
+        const todoEndTime = document.createElement('select');
+        times.map((time) => {
+            const todoTime = document.createElement('option');
+            todoTime.value = time;
+            todoTime.innerText=time;
+            todoEndTime.appendChild(todoTime);
+        });
+        todoEndTimeWrapper.appendChild(todoEndTimeTitle);
+        todoEndTimeWrapper.appendChild(todoEndTime);
+
+        modaltodoRow4.appendChild(todoStartTimeWrapper);
+        modaltodoRow4.appendChild(todoEndTimeWrapper);
 
         modalBody.appendChild(modaltodoRow1);
         modalBody.appendChild(modaltodoRow2);
         modalBody.appendChild(modaltodoRow3);
+        modalBody.appendChild(modaltodoRow4);
 
         return modalBody;
     }

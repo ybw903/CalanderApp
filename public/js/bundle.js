@@ -246,7 +246,12 @@ var Calander = /*#__PURE__*/function () {
               tableData.addEventListener('click', function (e) {
                 _this2.onClick(theDay);
               });
-              if (todo !== undefined) tableData.style.backgroundColor = todo.todoColor;
+
+              if (todo !== undefined) {
+                tableData.style.backgroundColor = todo.todoColor;
+                tableData.innerHTML = day + "<br>" + todo.todo;
+              }
+
               day = day === lastDay.getDate() ? 0 : day + 1;
             })();
           }
@@ -431,6 +436,11 @@ var TodoModal = /*#__PURE__*/function () {
     key: "makeModalBody",
     value: function makeModalBody() {
       var colors = ["#ddbdff", "pink", "#a4d3ee", "#9fd6c2"];
+      var times = Array.from({
+        length: 24
+      }, function (v, i) {
+        return i < 10 ? "0" + i + ":00" : +i + ":00";
+      });
       var modalBody = document.createElement('div');
       var modaltodoRow1 = document.createElement('div');
       var todoNamelabel = document.createElement('label');
@@ -462,9 +472,37 @@ var TodoModal = /*#__PURE__*/function () {
       todoColorSelect.id = "todoColorSelect";
       modaltodoRow3.appendChild(modaltodoRow3Title);
       modaltodoRow3.appendChild(todoColorSelect);
+      var modaltodoRow4 = document.createElement('div');
+      var todoStartTimeWrapper = document.createElement('div');
+      var todoStartTimeTitle = document.createElement('p');
+      todoStartTimeTitle.innerText = "시작시간";
+      var todoStartTime = document.createElement('select');
+      times.map(function (time) {
+        var todoTime = document.createElement('option');
+        todoTime.value = time;
+        todoTime.innerText = time;
+        todoStartTime.appendChild(todoTime);
+      });
+      todoStartTimeWrapper.appendChild(todoStartTimeTitle);
+      todoStartTimeWrapper.appendChild(todoStartTime);
+      var todoEndTimeWrapper = document.createElement('div');
+      var todoEndTimeTitle = document.createElement('p');
+      todoEndTimeTitle.innerText = "종료시간";
+      var todoEndTime = document.createElement('select');
+      times.map(function (time) {
+        var todoTime = document.createElement('option');
+        todoTime.value = time;
+        todoTime.innerText = time;
+        todoEndTime.appendChild(todoTime);
+      });
+      todoEndTimeWrapper.appendChild(todoEndTimeTitle);
+      todoEndTimeWrapper.appendChild(todoEndTime);
+      modaltodoRow4.appendChild(todoStartTimeWrapper);
+      modaltodoRow4.appendChild(todoEndTimeWrapper);
       modalBody.appendChild(modaltodoRow1);
       modalBody.appendChild(modaltodoRow2);
       modalBody.appendChild(modaltodoRow3);
+      modalBody.appendChild(modaltodoRow4);
       return modalBody;
     }
   }, {

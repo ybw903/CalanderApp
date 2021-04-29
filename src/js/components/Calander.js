@@ -103,13 +103,16 @@ export default class Calander {
                         console.log(+element.date=== +theDay);
                         return +element.date === +theDay
                     });
-
-                     tableData.textContent = day;
-                     tableRow.appendChild(tableData);
-                     tableData.className='td-day';
-                     tableData.addEventListener('click', e=>{this.onClick(theDay)});
-                     if(todo!==undefined) tableData.style.backgroundColor = todo.todoColor;
-                     day = (day === lastDay.getDate()? 0 : day+1);
+                    
+                    tableData.textContent=day; //TODO : Add another tag
+                    tableRow.appendChild(tableData);
+                    tableData.className='td-day';
+                    tableData.addEventListener('click', e=>{this.onClick(theDay)});
+                    if(todo!==undefined) {
+                         tableData.style.backgroundColor = todo.todoColor;
+                         tableData.innerHTML=day+"<br>"+todo.todoName;
+                    }
+                    day = (day === lastDay.getDate()? 0 : day+1);
                  }
                  
              }
