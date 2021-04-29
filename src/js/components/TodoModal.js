@@ -1,6 +1,7 @@
 import Todo from "../models/Todo";
 
 export default class TodoModal {
+    
     constructor ({$target, todoList, calRender}){
 
         this.isVisible = false;
@@ -40,7 +41,7 @@ export default class TodoModal {
 
         const todoName = document.querySelector('#todoName').value;
         const todo = document.querySelector('#todo').value;
-        const todoColor = document.querySelector('#todoColor').value;
+        const todoColor = document.querySelector('#todoColorSelect').value;
         const date = this.data;
 
         const newTodo = new Todo({todoName,todo,todoColor,date});
@@ -69,6 +70,8 @@ export default class TodoModal {
     }
 
     makeModalBody() {
+        const colors = ["#ddbdff","pink","#a4d3ee","#9fd6c2"];
+
         const modalBody = document.createElement('div');
 
         const modaltodoRow1 = document.createElement('div');
@@ -90,14 +93,21 @@ export default class TodoModal {
         modaltodoRow2.appendChild(todolabel);
         modaltodoRow2.appendChild(todo);
 
+
         const modaltodoRow3 = document.createElement('div');
-        const todoColorLabel = document.createElement('label');
-        todoColorLabel.innerText = '컬러';
-        const todoColor = document.createElement('input');
-        todoColor.setAttribute('type','text');
-        todoColor.id = "todoColor";
-        modaltodoRow3.appendChild(todoColorLabel);
-        modaltodoRow3.appendChild(todoColor);
+        const modaltodoRow3Title = document.createElement('p');
+        modaltodoRow3Title.innerText="색상"
+        const todoColorSelect = document.createElement('select');
+        colors.map((color) => {
+            const todoColor = document.createElement('option');
+            todoColor.style.backgroundColor = color;
+            todoColor.value = color;
+            todoColorSelect.appendChild(todoColor);
+        });
+        todoColorSelect.id = "todoColorSelect";
+        modaltodoRow3.appendChild(modaltodoRow3Title);
+        modaltodoRow3.appendChild(todoColorSelect);
+        
 
         modalBody.appendChild(modaltodoRow1);
         modalBody.appendChild(modaltodoRow2);
@@ -108,6 +118,8 @@ export default class TodoModal {
 
     makeModalFooter() {
         const modalFooter = document.createElement('div');
+        modalFooter.style.display='flex';
+        modalFooter.style.justifyContent = 'flex-end';
 
         const cancelButton = document.createElement('button');
         cancelButton.setAttribute('type','button');

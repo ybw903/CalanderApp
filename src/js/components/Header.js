@@ -16,7 +16,6 @@ export default class Header {
         wrapper.className = 'header-wrapper';
 
         const title = document.createElement('div');
-        title.className = 'title';
         
         const titleText = document.createElement('h3');
 
