@@ -5,7 +5,7 @@ export default class TodoModal {
     constructor ({$target, todoList, calRender}){
 
         this.isVisible = false;
-        this.data = null;
+        this.date = null;
         this.todoList = todoList;
         this.calRender= calRender;
 
@@ -27,13 +27,13 @@ export default class TodoModal {
 
     setState(theDay) {
         this.toggleModal();
-        this.data = theDay;
+        this.date = theDay;
         this.render();
     }
 
     onClose() {
         this.toggleModal();
-        this.data = null;
+        this.date = null;
         this.modalWrapper.innerHTML = '';
     }
 
@@ -42,7 +42,7 @@ export default class TodoModal {
         const todoName = document.querySelector('#todoName').value;
         const todo = document.querySelector('#todo').value;
         const todoColor = document.querySelector('#todoColorSelect').value;
-        const date = this.data;
+        const date = this.date;
 
         const newTodo = new Todo({todoName,todo,todoColor,date});
         this.todoList.push(newTodo);
@@ -70,6 +70,7 @@ export default class TodoModal {
     }
 
     makeModalBody() {
+        
         const colors = ["#ddbdff","pink","#a4d3ee","#9fd6c2"];
         const times = Array.from({length:24}, (v,i) =>
              i<10?

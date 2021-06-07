@@ -40,10 +40,10 @@ __webpack_require__(/*! regenerator-runtime/runtime */ "./node_modules/regenerat
 
 /***/ }),
 
-/***/ "./src/js/App.js":
-/*!***********************!*\
-  !*** ./src/js/App.js ***!
-  \***********************/
+/***/ "./src/client/js/App.js":
+/*!******************************!*\
+  !*** ./src/client/js/App.js ***!
+  \******************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -51,9 +51,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ App)
 /* harmony export */ });
-/* harmony import */ var _components_Calander__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/Calander */ "./src/js/components/Calander.js");
-/* harmony import */ var _components_Header__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/Header */ "./src/js/components/Header.js");
-/* harmony import */ var _components_TodoModal__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/TodoModal */ "./src/js/components/TodoModal.js");
+/* harmony import */ var _components_Calander__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/Calander */ "./src/client/js/components/Calander.js");
+/* harmony import */ var _components_Header__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/Header */ "./src/client/js/components/Header.js");
+/* harmony import */ var _components_TodoModal__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/TodoModal */ "./src/client/js/components/TodoModal.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 
@@ -92,10 +92,10 @@ var App = function App($target) {
 
 /***/ }),
 
-/***/ "./src/js/components/Calander.js":
-/*!***************************************!*\
-  !*** ./src/js/components/Calander.js ***!
-  \***************************************/
+/***/ "./src/client/js/components/Calander.js":
+/*!**********************************************!*\
+  !*** ./src/client/js/components/Calander.js ***!
+  \**********************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -240,7 +240,8 @@ var Calander = /*#__PURE__*/function () {
                 return +element.date === +theDay;
               });
 
-              tableData.textContent = day;
+              tableData.textContent = day; //TODO : Add another tag
+
               tableRow.appendChild(tableData);
               tableData.className = 'td-day';
               tableData.addEventListener('click', function (e) {
@@ -249,7 +250,7 @@ var Calander = /*#__PURE__*/function () {
 
               if (todo !== undefined) {
                 tableData.style.backgroundColor = todo.todoColor;
-                tableData.innerHTML = day + "<br>" + todo.todo;
+                tableData.innerHTML = day + "<br>" + todo.todoName;
               }
 
               day = day === lastDay.getDate() ? 0 : day + 1;
@@ -286,10 +287,10 @@ var Calander = /*#__PURE__*/function () {
 
 /***/ }),
 
-/***/ "./src/js/components/Header.js":
-/*!*************************************!*\
-  !*** ./src/js/components/Header.js ***!
-  \*************************************/
+/***/ "./src/client/js/components/Header.js":
+/*!********************************************!*\
+  !*** ./src/client/js/components/Header.js ***!
+  \********************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -335,10 +336,10 @@ var Header = /*#__PURE__*/function () {
 
 /***/ }),
 
-/***/ "./src/js/components/TodoModal.js":
-/*!****************************************!*\
-  !*** ./src/js/components/TodoModal.js ***!
-  \****************************************/
+/***/ "./src/client/js/components/TodoModal.js":
+/*!***********************************************!*\
+  !*** ./src/client/js/components/TodoModal.js ***!
+  \***********************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -346,7 +347,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ TodoModal)
 /* harmony export */ });
-/* harmony import */ var _models_Todo__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../models/Todo */ "./src/js/models/Todo.js");
+/* harmony import */ var _models_Todo__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../models/Todo */ "./src/client/js/models/Todo.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -364,7 +365,7 @@ var TodoModal = /*#__PURE__*/function () {
     _classCallCheck(this, TodoModal);
 
     this.isVisible = false;
-    this.data = null;
+    this.date = null;
     this.todoList = todoList;
     this.calRender = calRender;
     this.modalWrapper = document.createElement('div');
@@ -385,14 +386,14 @@ var TodoModal = /*#__PURE__*/function () {
     key: "setState",
     value: function setState(theDay) {
       this.toggleModal();
-      this.data = theDay;
+      this.date = theDay;
       this.render();
     }
   }, {
     key: "onClose",
     value: function onClose() {
       this.toggleModal();
-      this.data = null;
+      this.date = null;
       this.modalWrapper.innerHTML = '';
     }
   }, {
@@ -401,7 +402,7 @@ var TodoModal = /*#__PURE__*/function () {
       var todoName = document.querySelector('#todoName').value;
       var todo = document.querySelector('#todo').value;
       var todoColor = document.querySelector('#todoColorSelect').value;
-      var date = this.data;
+      var date = this.date;
       var newTodo = new _models_Todo__WEBPACK_IMPORTED_MODULE_0__.default({
         todoName: todoName,
         todo: todo,
@@ -552,10 +553,10 @@ var TodoModal = /*#__PURE__*/function () {
 
 /***/ }),
 
-/***/ "./src/js/models/Todo.js":
-/*!*******************************!*\
-  !*** ./src/js/models/Todo.js ***!
-  \*******************************/
+/***/ "./src/client/js/models/Todo.js":
+/*!**************************************!*\
+  !*** ./src/client/js/models/Todo.js ***!
+  \**************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -9639,10 +9640,10 @@ module.exports = __webpack_require__(/*! ../modules/_core */ "./node_modules/cor
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/sass/main.scss":
-/*!*********************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/sass/main.scss ***!
-  \*********************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/client/sass/main.scss":
+/*!****************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/client/sass/main.scss ***!
+  \****************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -9650,16 +9651,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/cssWithMappingToString.js */ "./node_modules/css-loader/dist/runtime/cssWithMappingToString.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/cssWithMappingToString.js */ "./node_modules/css-loader/dist/runtime/cssWithMappingToString.js");
 /* harmony import */ var _node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
 /* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
 // Imports
 
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".header {\n  width: 100%;\n  height: 5vh;\n  background-color: beige;\n  display: flex;\n  justify-content: center;\n  align-items: center; }\n\nbody {\n  margin: 0; }\n\n.calander-header h2 {\n  display: inline-block;\n  margin: 10px;\n  padding: 10px; }\n\n.sunday {\n  color: red; }\n\n.satday {\n  color: blue; }\n\n.calander {\n  width: 100%;\n  height: 95vh;\n  display: block;\n  text-align: center;\n  background: #ddaf35; }\n\n.calander-content-wrapper {\n  height: 80vh; }\n\ntable {\n  margin: auto;\n  table-layout: fixed;\n  height: 100%;\n  width: 90%;\n  text-align: center;\n  font-weight: bold;\n  font-size: 1.5rem; }\n\n.td-day:hover {\n  background-color: cornflowerblue;\n  cursor: pointer; }\n\n.hidden {\n  visibility: hidden; }\n\n.overlay {\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.5); }\n\n.modal-wrapper {\n  position: fixed;\n  top: 0;\n  bottom: 0;\n  left: 0;\n  right: 0;\n  z-index: 1;\n  display: flex;\n  justify-content: center;\n  align-items: center; }\n\n.modal-contents {\n  position: relative;\n  display: flex;\n  flex-direction: column;\n  height: 70%;\n  width: 30%;\n  padding: 10px;\n  background-color: white;\n  color: black;\n  /* TODO: box-shadow */ }\n\n.modal-header {\n  display: flex;\n  justify-content: space-between;\n  font-size: 30px; }\n\n.modal-title {\n  margin: 0; }\n", "",{"version":3,"sources":["webpack://./src/sass/partials/_header.scss","webpack://./src/sass/partials/_body.scss","webpack://./src/sass/partials/_calanderHeader.scss","webpack://./src/sass/partials/_calander.scss","webpack://./src/sass/partials/_todoModal.scss"],"names":[],"mappings":"AAAA;EACI,WAAW;EACX,WAAW;EACX,uBAAsB;EACtB,aAAa;EACb,uBAAuB;EACvB,mBAAmB,EAAA;;ACNvB;EACI,SAAS,EAAA;;ACDb;EACI,qBAAqB;EACrB,YAAY;EACZ,aAAa,EAAA;;AAIjB;EACI,UAAU,EAAA;;AAGd;EACI,WAAW,EAAA;;ACZf;EACI,WAAW;EACX,YAAY;EACZ,cAAc;EACd,kBAAmB;EACnB,mBAAmB,EAAA;;AAGvB;EACI,YAAY,EAAA;;AAGhB;EACI,YAAY;EACZ,mBAAmB;EACnB,YAAY;EACZ,UAAU;EACV,kBAAkB;EAClB,iBAAiB;EACjB,iBAAiB,EAAA;;AAIrB;EACI,gCAAgC;EAChC,eAAe,EAAA;;ACxBnB;EACI,kBAAkB,EAAA;;AAGtB;EACI,kBAAkB;EAClB,WAAW;EACX,YAAY;EACZ,oCAAoC,EAAA;;AAGxC;EACI,eAAe;EACf,MAAM;EACN,SAAS;EACT,OAAO;EACP,QAAQ;EAER,UAAU;EAEV,aAAa;EACb,uBAAuB;EACvB,mBAAmB,EAAA;;AAGvB;EACI,kBAAkB;EAClB,aAAa;EACb,sBAAsB;EAEtB,WAAW;EACX,UAAU;EACV,aAAa;EACb,uBAAuB;EACvB,YAAY;EAEZ,qBAAA,EAAsB;;AAG1B;EACI,aAAa;EACb,8BAA8B;EAE9B,eAAe,EAAA;;AAGnB;EACI,SAAS,EAAA","sourcesContent":[".header{\r\n    width: 100%;\r\n    height: 5vh;\r\n    background-color:beige;\r\n    display: flex;\r\n    justify-content: center;\r\n    align-items: center;\r\n}\r\n\r\n","body {\r\n    margin: 0;\r\n}",".calander-header h2 {\r\n    display: inline-block;\r\n    margin: 10px;\r\n    padding: 10px;\r\n}\r\n\r\n\r\n.sunday {\r\n    color :red;\r\n}\r\n\r\n.satday{\r\n    color: blue;\r\n}",".calander {\r\n    width: 100%;\r\n    height: 95vh;\r\n    display: block;\r\n    text-align : center;\r\n    background: #ddaf35;\r\n}\r\n\r\n.calander-content-wrapper{\r\n    height: 80vh;\r\n}\r\n\r\ntable{\r\n    margin: auto;\r\n    table-layout: fixed;\r\n    height: 100%;\r\n    width: 90%;\r\n    text-align: center;\r\n    font-weight: bold;\r\n    font-size: 1.5rem;\r\n}\r\n\r\n\r\n.td-day:hover {\r\n    background-color: cornflowerblue;\r\n    cursor: pointer;\r\n}","\r\n.hidden {\r\n    visibility: hidden;\r\n}\r\n\r\n.overlay {\r\n    position: absolute;\r\n    width: 100%;\r\n    height: 100%;\r\n    background-color: rgba(0, 0, 0, 0.5);\r\n}\r\n\r\n.modal-wrapper {\r\n    position: fixed;\r\n    top: 0;\r\n    bottom: 0;\r\n    left: 0;\r\n    right: 0;\r\n\r\n    z-index: 1;\r\n    \r\n    display: flex;\r\n    justify-content: center;\r\n    align-items: center;\r\n}\r\n\r\n.modal-contents {\r\n    position: relative;\r\n    display: flex;\r\n    flex-direction: column;\r\n    \r\n    height: 70%;\r\n    width: 30%;\r\n    padding: 10px;\r\n    background-color: white;\r\n    color: black;\r\n\r\n    /* TODO: box-shadow */\r\n}\r\n\r\n.modal-header {\r\n    display: flex;\r\n    justify-content: space-between;\r\n\r\n    font-size: 30px;\r\n}\r\n\r\n.modal-title {\r\n    margin: 0;\r\n}"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, ".header {\n  width: 100%;\n  height: 5vh;\n  background-color: beige;\n  display: flex;\n  justify-content: center;\n  align-items: center; }\n\nbody {\n  margin: 0; }\n\n.calander-header h2 {\n  display: inline-block;\n  margin: 10px;\n  padding: 10px; }\n\n.sunday {\n  color: red; }\n\n.satday {\n  color: blue; }\n\n.calander {\n  width: 100%;\n  height: 95vh;\n  display: block;\n  text-align: center;\n  background: #ddaf35; }\n\n.calander-content-wrapper {\n  height: 80vh; }\n\ntable {\n  margin: auto;\n  table-layout: fixed;\n  height: 100%;\n  width: 90%;\n  text-align: center;\n  font-weight: bold;\n  font-size: 1.5rem; }\n\n.td-day:hover {\n  background-color: cornflowerblue;\n  cursor: pointer; }\n\n.hidden {\n  visibility: hidden; }\n\n.overlay {\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.5); }\n\n.modal-wrapper {\n  position: fixed;\n  top: 0;\n  bottom: 0;\n  left: 0;\n  right: 0;\n  z-index: 1;\n  display: flex;\n  justify-content: center;\n  align-items: center; }\n\n.modal-contents {\n  position: relative;\n  display: flex;\n  flex-direction: column;\n  height: 70%;\n  width: 30%;\n  padding: 10px;\n  background-color: white;\n  color: black;\n  /* TODO: box-shadow */ }\n\n.modal-header {\n  display: flex;\n  justify-content: space-between;\n  font-size: 30px; }\n\n.modal-title {\n  margin: 0; }\n", "",{"version":3,"sources":["webpack://./src/client/sass/partials/_header.scss","webpack://./src/client/sass/partials/_body.scss","webpack://./src/client/sass/partials/_calanderHeader.scss","webpack://./src/client/sass/partials/_calander.scss","webpack://./src/client/sass/partials/_todoModal.scss"],"names":[],"mappings":"AAAA;EACI,WAAW;EACX,WAAW;EACX,uBAAsB;EACtB,aAAa;EACb,uBAAuB;EACvB,mBAAmB,EAAA;;ACNvB;EACI,SAAS,EAAA;;ACDb;EACI,qBAAqB;EACrB,YAAY;EACZ,aAAa,EAAA;;AAIjB;EACI,UAAU,EAAA;;AAGd;EACI,WAAW,EAAA;;ACZf;EACI,WAAW;EACX,YAAY;EACZ,cAAc;EACd,kBAAmB;EACnB,mBAAmB,EAAA;;AAGvB;EACI,YAAY,EAAA;;AAGhB;EACI,YAAY;EACZ,mBAAmB;EACnB,YAAY;EACZ,UAAU;EACV,kBAAkB;EAClB,iBAAiB;EACjB,iBAAiB,EAAA;;AAIrB;EACI,gCAAgC;EAChC,eAAe,EAAA;;ACxBnB;EACI,kBAAkB,EAAA;;AAGtB;EACI,kBAAkB;EAClB,WAAW;EACX,YAAY;EACZ,oCAAoC,EAAA;;AAGxC;EACI,eAAe;EACf,MAAM;EACN,SAAS;EACT,OAAO;EACP,QAAQ;EAER,UAAU;EAEV,aAAa;EACb,uBAAuB;EACvB,mBAAmB,EAAA;;AAGvB;EACI,kBAAkB;EAClB,aAAa;EACb,sBAAsB;EAEtB,WAAW;EACX,UAAU;EACV,aAAa;EACb,uBAAuB;EACvB,YAAY;EAEZ,qBAAA,EAAsB;;AAG1B;EACI,aAAa;EACb,8BAA8B;EAE9B,eAAe,EAAA;;AAGnB;EACI,SAAS,EAAA","sourcesContent":[".header{\r\n    width: 100%;\r\n    height: 5vh;\r\n    background-color:beige;\r\n    display: flex;\r\n    justify-content: center;\r\n    align-items: center;\r\n}\r\n\r\n","body {\r\n    margin: 0;\r\n}",".calander-header h2 {\r\n    display: inline-block;\r\n    margin: 10px;\r\n    padding: 10px;\r\n}\r\n\r\n\r\n.sunday {\r\n    color :red;\r\n}\r\n\r\n.satday{\r\n    color: blue;\r\n}",".calander {\r\n    width: 100%;\r\n    height: 95vh;\r\n    display: block;\r\n    text-align : center;\r\n    background: #ddaf35;\r\n}\r\n\r\n.calander-content-wrapper{\r\n    height: 80vh;\r\n}\r\n\r\ntable{\r\n    margin: auto;\r\n    table-layout: fixed;\r\n    height: 100%;\r\n    width: 90%;\r\n    text-align: center;\r\n    font-weight: bold;\r\n    font-size: 1.5rem;\r\n}\r\n\r\n\r\n.td-day:hover {\r\n    background-color: cornflowerblue;\r\n    cursor: pointer;\r\n}","\r\n.hidden {\r\n    visibility: hidden;\r\n}\r\n\r\n.overlay {\r\n    position: absolute;\r\n    width: 100%;\r\n    height: 100%;\r\n    background-color: rgba(0, 0, 0, 0.5);\r\n}\r\n\r\n.modal-wrapper {\r\n    position: fixed;\r\n    top: 0;\r\n    bottom: 0;\r\n    left: 0;\r\n    right: 0;\r\n\r\n    z-index: 1;\r\n    \r\n    display: flex;\r\n    justify-content: center;\r\n    align-items: center;\r\n}\r\n\r\n.modal-contents {\r\n    position: relative;\r\n    display: flex;\r\n    flex-direction: column;\r\n    \r\n    height: 70%;\r\n    width: 30%;\r\n    padding: 10px;\r\n    background-color: white;\r\n    color: black;\r\n\r\n    /* TODO: box-shadow */\r\n}\r\n\r\n.modal-header {\r\n    display: flex;\r\n    justify-content: space-between;\r\n\r\n    font-size: 30px;\r\n}\r\n\r\n.modal-title {\r\n    margin: 0;\r\n}"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -10915,11 +10916,11 @@ _global["default"]._babelPolyfill = true;
 (() => {
 "use strict";
 var __webpack_exports__ = {};
-/*!*************************!*\
-  !*** ./src/js/index.js ***!
-  \*************************/
+/*!********************************!*\
+  !*** ./src/client/js/index.js ***!
+  \********************************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _App_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./App.js */ "./src/js/App.js");
+/* harmony import */ var _App_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./App.js */ "./src/client/js/App.js");
 
 var app = new _App_js__WEBPACK_IMPORTED_MODULE_0__.default(document.querySelector('.app'));
 })();
@@ -10927,16 +10928,16 @@ var app = new _App_js__WEBPACK_IMPORTED_MODULE_0__.default(document.querySelecto
 // This entry need to be wrapped in an IIFE because it need to be in strict mode.
 (() => {
 "use strict";
-/*!****************************!*\
-  !*** ./src/sass/main.scss ***!
-  \****************************/
+/*!***********************************!*\
+  !*** ./src/client/sass/main.scss ***!
+  \***********************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_main_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../node_modules/css-loader/dist/cjs.js!../../node_modules/sass-loader/dist/cjs.js!./main.scss */ "./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/sass/main.scss");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_main_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../node_modules/css-loader/dist/cjs.js!../../../node_modules/sass-loader/dist/cjs.js!./main.scss */ "./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/client/sass/main.scss");
 
             
 
