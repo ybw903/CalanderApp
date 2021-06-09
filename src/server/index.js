@@ -1,16 +1,5 @@
-const http = require('http');
+var server = require('./server');
+var router = require('./router');
+var requestHandlers = require('./requestHandler');
 
-http.createServer((request,response) => {
-    return request
-    .on('error',(err) => {console.log(err);})
-    .on('data',(data) => {console.log(data);})
-    .on('end', () => {
-        response.on('error', (err)=>{
-            console.error(err);
-        });
-        response.statusCode = 200;
-        response.setHeader('Content-Type','text/plain');
-        response.write('hi\n');
-        response.end('the end!');
-    });
-}).listen(8080);
+server.start(router.route, requestHandlers.handle);
