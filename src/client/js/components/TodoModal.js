@@ -83,6 +83,7 @@ export default class TodoModal {
         const modaltodoRow1 = document.createElement('div');
         const todoNamelabel = document.createElement('label');
         todoNamelabel.innerText = '일정명';
+        todoNamelabel.className = 'modal-label'
         const todoName = document.createElement('input');
         todoName.setAttribute('type','text');
         todoName.id = "todoName";
@@ -92,6 +93,7 @@ export default class TodoModal {
         const modaltodoRow2 = document.createElement('div');
         const todolabel = document.createElement('label');
         todolabel.innerText = '일정내용';
+        todolabel.className = 'modal-label'
         const todo = document.createElement('textarea');
         todo.setAttribute('rows','4');
         todo.setAttribute('cols','50');
@@ -115,8 +117,10 @@ export default class TodoModal {
         modaltodoRow3.appendChild(todoColorSelect);
         
         const modaltodoRow4 = document.createElement('div');
+        modaltodoRow4.className = "modal-timeWrapper"
 
         const todoStartTimeWrapper = document.createElement('div');
+        todoStartTimeWrapper.className = "modal-time";
         const todoStartTimeTitle = document.createElement('p');
         todoStartTimeTitle.innerText="시작시간"
         const todoStartTime = document.createElement('select');
@@ -130,6 +134,7 @@ export default class TodoModal {
         todoStartTimeWrapper.appendChild(todoStartTime);
 
         const todoEndTimeWrapper = document.createElement('div');
+        todoEndTimeWrapper.className = "modal-time";
         const todoEndTimeTitle = document.createElement('p');
         todoEndTimeTitle.innerText="종료시간" 
         const todoEndTime = document.createElement('select');

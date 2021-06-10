@@ -38,6 +38,24 @@
     /* TODO: box-shadow */
 }
 
+.modal-label {
+    display: block;
+}
+
+.modal-timeWrapper {
+    display: flex;
+    justify-content: space-between;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    margin-block-end: 1rem;
+}
+
+.modal-time {
+    display: inline-block;
+}
+
+
+
 .modal-header {
     display: flex;
     justify-content: space-between;
